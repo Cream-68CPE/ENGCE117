@@ -7,7 +7,7 @@ int main() {
     printf("Enter Number : ") ;
      // รับค่า N (จำนวนรอบ)หรือไม่
     if (scanf( "%d", &N) != 1 ) {
-        return 1 ; // จบโปรแกรมด้วย Error Code
+        return 1 ; 
     }
 
     if (N <= 0) {
