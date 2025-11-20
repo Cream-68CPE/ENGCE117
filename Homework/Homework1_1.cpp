@@ -4,10 +4,10 @@
 int main() {
     int N, i ;
 
-    printf("Enter Number : ") ;
+    printf( "Enter Number : " ) ;
      // รับค่า N (จำนวนรอบ)หรือไม่
     if (scanf( "%d", &N) != 1 ) {
-        return 1 ; 
+        return 1 ;
     }
 
     if (N <= 0) {
