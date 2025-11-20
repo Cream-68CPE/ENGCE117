@@ -10,7 +10,6 @@ int main() {
         return 1 ; // Handle input failure (จัดการเมื่อป้อนค่าที่ไม่ใช่ตัวเลข)
     }
 
-    // ตรวจสอบเงื่อนไข: N ต้องมากกว่าหรือเท่ากับ 1
     if (N < 1) {
         printf( "Error\n" ) ;
     } else {
