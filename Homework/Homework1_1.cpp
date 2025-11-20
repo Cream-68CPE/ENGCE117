@@ -1,21 +1,20 @@
+// Pre-code (โค้ดบังคับ)
 #include <stdio.h>
 
 int main() {
     int N, i ;
 
-    printf( "Enter Number: " ) ;
-
-    // รับค่า N (จำนวนรอบ)
-    if ( scanf( "%d" , &N ) != 1 ) {
-        return 1 ; // Handle input failure (จัดการเมื่อป้อนค่าที่ไม่ใช่ตัวเลข)
+    printf("Enter an integer N: ") ;
+     // รับค่า N (จำนวนรอบ)หรือไม่
+    if (scanf( "%d", &N) != 1 ) {
+        return 1 ; // จบโปรแกรมด้วย Error Code
     }
 
-    if (N < 1) {
-        printf( "Error\n" ) ;
+    if (N <= 0) {
+        printf("Error\n");
     } else {
-        // Implement the for loop to print the message N times
-        for ( i = 0; i < N; i++ ) {
-            printf( "Hello Loop!\n" ) ; 
+        for ( i = 0 ; i < N ; i++ ) {
+            printf( "Hello Loop!\n" ) ;
         }
     }
 
