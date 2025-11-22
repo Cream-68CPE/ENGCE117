@@ -6,7 +6,7 @@ int main() {
 
     printf( "Enter your score " ) ;
     if (scanf( "%d", &score ) != 1) {
-        return 1 ; // Handle input failure   
+        return 1 ; 
     }
    
     if ( score >= 80 ) {
