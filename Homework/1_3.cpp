@@ -8,11 +8,9 @@ int main() {
     printf( "Enter two integers (num1, num2) and the operation code (1-4):\n" ) ;
     if (scanf( "%d %d %d", &num1, &num2, &operationCode ) != 3) {
         printf( "Input error.\n" ) ;
-        return 1 ; // Handle input failure
+        return 1 ; 
     }
     
-    // TODO: Implement the switch statement logic here, including break and default
-
     switch (operationCode) {
         case 1: // บวก 
             result = num1 + num2 ;
@@ -38,7 +36,7 @@ int main() {
             printf("Result: %d / %d = %d\n", num1, num2, result) ;
             break ;
             
-        default: // รหัสคำสั่งไม่ถูกต้อง 
+        default: 
             printf( "Invalid Operation\n" ) ;
             break ;
     }
