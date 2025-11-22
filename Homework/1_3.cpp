@@ -5,7 +5,7 @@ int main() {
     int num1, num2, operationCode, result ;
     
     // รับค่าตัวเลข 2 ตัวและรหัสคำสั่ง
-    printf( "Enter two integers (num1, num2) and the operation code (1-4):\n" ) ;
+    printf( "Enter two Number (num1, num2) and the operation code (1-4):\n" ) ;
     if (scanf( "%d %d %d", &num1, &num2, &operationCode ) != 3) {
         printf( "Input error.\n" ) ;
         return 1 ; 
