@@ -10,10 +10,13 @@ int main()
         
     }
     
-    for ( i = 0 ; i <= N ; i++ ) {
+    if ( N > 0 ) {
         
-        sum = sum + i ;
+        for ( i = 0 ; i <= N ; i++ ) {
         
+            sum = sum + i ;
+        
+        }
     }
     
     printf( "%d", sum ) ;
