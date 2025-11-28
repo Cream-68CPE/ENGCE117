@@ -8,12 +8,13 @@ struct Campaign
     float adSpend ;
 } ;
 
-void getCampaignData( struct Campaign campaigns[], int index ) ;
-void processAndShowData( struct Campaign campaigns[], int n ) ;
-
 int main()
 {
     int N ;
+    float commissionRate ;
+    float totalRevenue ;
+    float totalCommission ;
+    float netProfit ;
 
     printf( "Enter number of campaigns: " ) ;
     scanf( "%d", &N ) ;
@@ -23,38 +24,21 @@ int main()
     for ( int i = 0 ; i < N ; i++ )
     {
         printf( "\n--- Campaign %d ---\n", i + 1 ) ;
-        getCampaignData( campaigns, i ) ;
-    }
 
-    printf( "\n================ REPORT ================\n" ) ;
-    processAndShowData( campaigns, N ) ;
+        while ( getchar() != '\n' ) ;
 
-    return 0 ;
-}
+        printf( "Campaign Name: " ) ;
+        scanf( "%[^\n]", campaigns[i].name ) ;
 
-void getCampaignData( struct Campaign campaigns[], int index )
-{
-    while ( getchar() != '\n' ) ;
+        printf( "Product Price: " ) ;
+        scanf( "%f", &campaigns[i].productPrice ) ;
 
-    printf( "Enter Campaign Name: " ) ;
-    scanf( "%[^\n]", campaigns[index].name ) ;
+        printf( "Sales Count: " ) ;
+        scanf( "%d", &campaigns[i].salesCount ) ;
 
-    printf( "Enter Product Price: " ) ;
-    scanf( "%f", &campaigns[index].productPrice ) ;
+        printf( "Ad Spend: " ) ;
+        scanf( "%f", &campaigns[i].adSpend ) ;
 
-    printf( "Enter Sales Count: " ) ;
-    scanf( "%d", &campaigns[index].salesCount ) ;
-
-    printf( "Enter Ad Spend: " ) ;
-    scanf( "%f", &campaigns[index].adSpend ) ;
-}
-
-void processAndShowData( struct Campaign campaigns[], int n )
-{
-    float commissionRate, totalRevenue, totalCommission, netProfit ;
-
-    for ( int i = 0 ; i < n ; i++ )
-    {
         if ( campaigns[i].salesCount >= 20 )
         {
             commissionRate = 0.20 ;
@@ -72,11 +56,12 @@ void processAndShowData( struct Campaign campaigns[], int n )
         totalCommission = totalRevenue * commissionRate ;
         netProfit = totalCommission - campaigns[i].adSpend ;
 
-        printf( "Campaign: %s\n", campaigns[i].name ) ;
-        printf( " > Sales: %d (Rate: %.0f%%)\n", campaigns[i].salesCount, commissionRate * 100 ) ;
-        printf( " > Total Revenue: %.2f\n", totalRevenue ) ;
-        printf( " > Total Commission: %.2f\n", totalCommission ) ;
-        printf( " > Net Profit/Loss: %.2f\n", netProfit ) ;
-        printf( "----------------------------------------\n" ) ;
+        printf( "Result:\n" ) ;
+        printf( " > Rate: %.0f%%\n", commissionRate * 100 ) ;
+        printf( " > Revenue: %.2f\n", totalRevenue ) ;
+        printf( " > Commission: %.2f\n", totalCommission ) ;
+        printf( " > Net Profit: %.2f\n", netProfit ) ;
     }
+
+    return 0 ;
 }
