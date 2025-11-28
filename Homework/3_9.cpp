@@ -2,46 +2,54 @@
 
 int main()
 {
-    float currentBudget ;
     int N_DAYS ;
+    int day ;
+    float initialBudget ;
+    float remainingBudget ;
     float dailySpend ;
 
     printf( "Enter initial budget: " ) ;
-    scanf( "%f", &currentBudget ) ;
+    scanf( "%f", &initialBudget ) ;
 
     printf( "Enter N_DAYS: " ) ;
     scanf( "%d", &N_DAYS ) ;
 
-    printf( "\n--- Daily Report ---\n" ) ;
-    printf( "Day\tSpent\tRemaining\n" ) ;
+    remainingBudget = initialBudget ;
 
-    for ( int day = 1 ; day <= N_DAYS ; day++ )
+    printf( "Day | Spend | Remaining\n" ) ;
+    printf( "-----------------------\n" ) ;
+
+    for ( day = 1 ; day <= N_DAYS ; day++ )
     {
-        if ( currentBudget >= 500.00 )
+        if ( remainingBudget >= 500.00 )
         {
             dailySpend = 100.00 ;
         }
-        else if ( currentBudget >= 100.00 )
+        else if ( remainingBudget >= 100.00 )
         {
             dailySpend = 50.00 ;
         }
-        else
+        else if ( remainingBudget > 0.0 )
         {
             dailySpend = 20.00 ;
         }
-
-        if ( dailySpend > currentBudget )
+        else
         {
-            dailySpend = currentBudget ;
+            dailySpend = 0.0 ;
         }
 
-        currentBudget = currentBudget - dailySpend ;
+        if ( dailySpend > remainingBudget )
+        {
+            dailySpend = remainingBudget ;
+        }
 
-        printf( "%d\t%.2f\t%.2f\n", day, dailySpend, currentBudget ) ;
+        remainingBudget = remainingBudget - dailySpend ;
+
+        printf( "%d | %.2f | %.2f\n", day, dailySpend, remainingBudget ) ;
     }
 
-    printf( "\n--- Summary ---\n" ) ;
-    printf( "Final Budget: %.2f\n", currentBudget ) ;
+    printf( "-----------------------\n" ) ;
+    printf( "Final Budget: %.2f\n", remainingBudget ) ;
 
     return 0 ;
 }
