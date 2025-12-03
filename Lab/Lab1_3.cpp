@@ -1,5 +1,10 @@
 #include <stdio.h>
 
+/* ประกาศ Array ไว้ข้างนอก (Global) เพื่อให้มีที่อยู่แน่นอน
+   และข้อมูลไม่หายเมื่อจบฟังก์ชัน (แก้เรื่อง Stability)
+*/
+int storage[ 200 ] ; 
+
 int *GetSet( int * ) ;
 
 int main() {
@@ -10,24 +15,22 @@ int main() {
     data = GetSet( &num ) ;
     
     return 0 ;
-    
 }
 
-int *GetSet( int *num ) {
+int *GetSet( int *count ) {
     
-    /* ใช้ static array เพื่อเก็บข้อมูลถาวร ไม่ให้หายเมื่อจบฟังก์ชัน */
-    static int buffer[ 100 ] ;
+    /* รับจำนวนสมาชิกมาใส่ในตัวแปรที่ main ส่งมา */
+    scanf( "%d" , count ) ;
     
-    scanf( "%d" , num ) ;
-    
-    int i = 0 ;
-    for ( i = 0 ; i < *num ; i++ ) {
+    int k = 0 ;
+    /* วนลูปรับค่า โดยใช้ *count เพื่อดึงค่าจำนวนเต็มออกมา */
+    for ( k = 0 ; k < *count ; k++ ) {
         
-        scanf( "%d" , &buffer[ i ] ) ;
+        /* เก็บข้อมูลลงใน Global Array ที่เตรียมไว้ */
+        scanf( "%d" , &storage[ k ] ) ;
         
     }
     
-    /* ส่งคืน address ของ buffer กลับไปให้ main */
-    return buffer ;
-    
+    /* ส่ง address ของ storage กลับไป */
+    return storage ;
 }
