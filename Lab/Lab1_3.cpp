@@ -1,9 +1,5 @@
 #include <stdio.h>
-
-/* ประกาศ Array ไว้ข้างนอก (Global) เพื่อให้มีที่อยู่แน่นอน
-   และข้อมูลไม่หายเมื่อจบฟังก์ชัน (แก้เรื่อง Stability)
-*/
-int storage[ 200 ] ; 
+#include <stdlib.h>
 
 int *GetSet( int * ) ;
 
@@ -15,22 +11,25 @@ int main() {
     data = GetSet( &num ) ;
     
     return 0 ;
+    
 }
 
-int *GetSet( int *count ) {
+int *GetSet( int *cnt ) {
     
-    /* รับจำนวนสมาชิกมาใส่ในตัวแปรที่ main ส่งมา */
-    scanf( "%d" , count ) ;
+    scanf( "%d" , cnt ) ;
     
-    int k = 0 ;
-    /* วนลูปรับค่า โดยใช้ *count เพื่อดึงค่าจำนวนเต็มออกมา */
-    for ( k = 0 ; k < *count ; k++ ) {
+    int *dynamicBlock ;
+    dynamicBlock = ( int * ) malloc( *cnt * sizeof(int) ) ;
+    
+    if ( dynamicBlock == NULL ) return NULL ;
+
+    int i = 0 ;
+    for ( i = 0 ; i < *cnt ; i++ ) {
         
-        /* เก็บข้อมูลลงใน Global Array ที่เตรียมไว้ */
-        scanf( "%d" , &storage[ k ] ) ;
+        scanf( "%d" , ( dynamicBlock + i ) ) ;
         
     }
     
-    /* ส่ง address ของ storage กลับไป */
-    return storage ;
+    return dynamicBlock ;
+    
 }
