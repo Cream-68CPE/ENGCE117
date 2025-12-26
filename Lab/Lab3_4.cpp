@@ -8,17 +8,16 @@ struct student {
 } ;
 
 void GetStudent( struct student child[][ 10 ], int *room ) ;
+void showResult( struct student child[][ 10 ], int room ) ;
 
 int main() {
     
     struct student children[ 20 ][ 10 ] ;
     int group ;
     
-    // --- PROCESS ---
     GetStudent( children, &group ) ;
     
-    // --- OUTPUT ---
-    printf( "Data entry completed for %d groups.\n", group ) ;
+    showResult( children, group ) ;
     
     return 0 ;
     
@@ -26,14 +25,17 @@ int main() {
 
 void GetStudent( struct student child[][ 10 ], int *room ) {
     
-    // --- INPUT ---
-    printf( "Enter number of classrooms: " ) ;
-    scanf( "%d", room ) ; // เก็บค่าเข้า Pointer room (เปลี่ยนค่า group ใน main ทันที)
-    
-    // --- PROCESS ---
+    printf( "Enter number of classrooms (1-20): " ) ;
+    scanf( "%d", room ) ;
+
+    if ( *room < 1 || *room > 20 ) {
+        printf( "Invalid number of classrooms. Please run again.\n" ) ;
+        return ;
+    }
+
     for ( int i = 0 ; i < *room ; i++ ) {
         
-        printf( "Classroom %d:\n", i + 1 ) ;
+        printf( "\n--- Classroom %d ---\n", i + 1 ) ;
         
         for ( int j = 0 ; j < 10 ; j++ ) {
             
@@ -51,6 +53,32 @@ void GetStudent( struct student child[][ 10 ], int *room ) {
             
             printf( "\n" ) ;
             
+        }
+        
+    }
+    
+}
+
+void showResult( struct student child[][ 10 ], int room ) {
+    
+    if ( room < 1 || room > 20 ) {
+        return ;
+    }
+
+
+    for ( int i = 0 ; i < room ; i++ ) {
+        
+        printf( "\nClassroom %d:\n", i + 1 ) ;
+        
+        for ( int j = 0 ; j < 10 ; j++ ) {
+            
+            printf( "%2d. Name: %-10s | Age: %d | Sex: %c | GPA: %.2f\n", 
+                    j + 1, 
+                    child[ i ][ j ].name, 
+                    child[ i ][ j ].age, 
+                    child[ i ][ j ].sex, 
+                    child[ i ][ j ].gpa ) ;
+                    
         }
         
     }
