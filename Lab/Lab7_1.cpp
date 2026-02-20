@@ -1,8 +1,5 @@
-#include <iostream>
-#include <cstring>
-#include <cstdio>
-
-using namespace std ;
+#include <stdio.h>
+#include <string.h>
 
 struct studentNode {
     char name[ 20 ] ;
@@ -22,6 +19,13 @@ class LinkedList {
         void DelNode() ;
         void GoNext() ;
         virtual void ShowNode() ;
+} ;
+
+class NewList : public LinkedList {
+    public :
+        void GoFirst() ;
+        virtual void ShowNode() ;
+        void InsertNode( const char n[], int a, char s, float g ) ;
 } ;
 
 LinkedList::LinkedList() {
@@ -69,13 +73,6 @@ void LinkedList::ShowNode() {
         printf( "%s %d %c %.2f\n", (*now)->name, (*now)->age, (*now)->sex, (*now)->gpa ) ;
     }
 }
-
-class NewList : public LinkedList {
-    public :
-        void GoFirst() ;
-        virtual void ShowNode() ;
-        void InsertNode( const char n[], int a, char s, float g ) ;
-} ;
 
 void NewList::GoFirst() {
     now = &start ;
