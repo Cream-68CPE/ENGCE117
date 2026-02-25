@@ -1,32 +1,32 @@
 int *KnapsackGreedy( int *w, int *v, int n, int wx ) {
-    static int x[ 5 ] ; 
-    int i, j, best_idx ;
-    float max_ratio, ratio ;
-    
+    static int x[ 5 ] ;
+    int i, j, best ;
+    float max_r, r ;
+
     for ( i = 0 ; i < n ; i++ ) {
         x[ i ] = 0 ;
     }
 
     for ( i = 0 ; i < n ; i++ ) {
-        max_ratio = -1.0 ;
-        best_idx = -1 ;
+        max_r = -1.0 ;
+        best = -1 ;
 
         for ( j = 0 ; j < n ; j++ ) {
             if ( x[ j ] == 0 ) {
-                ratio = ( float ) v[ j ] / w[ j ] ;
-                if ( ratio > max_ratio ) {
-                    max_ratio = ratio ;
-                    best_idx = j ;
+                r = ( float ) v[ j ] / w[ j ] ;
+                if ( r > max_r ) {
+                    max_r = r ;
+                    best = j ;
                 }
             }
         }
 
-        if ( best_idx != -1 ) {
-            if ( w[ best_idx ] <= wx ) {
-                x[ best_idx ] = 1 ;
-                wx -= w[ best_idx ] ;
+        if ( best != -1 ) {
+            if ( w[ best ] <= wx ) {
+                x[ best ] = 1 ;
+                wx -= w[ best ] ;
             } else {
-                x[ best_idx ] = -1 ; 
+                x[ best ] = -1 ;
             }
         }
     }
