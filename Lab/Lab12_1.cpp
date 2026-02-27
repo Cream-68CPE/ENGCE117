@@ -1,83 +1,78 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-#define INF 9999
-#define NO_EDGE -1
+int *Dijkstra( int *L, int n ) ;
 
-int getMinVertex( int *d, int *visited, int n ) {
-    int min = INF ;
-    int u = -1 ;
-    int j ;
+int main() {
+    int n = 5, i = 0, j = 0, *d, *g ;
+    g = new int[ n * n ] ;
+    for ( i = 0 ; i < n ; i++ )
+        for ( j = 0 ; j < n ; j++ )
+            g[ i * n + j ] = -1 ;
+
+    g[ 0 * n + 1 ] = 100 ; g[ 0 * n + 2 ] = 80 ;
+    g[ 0 * n + 3 ] = 30 ;  g[ 0 * n + 4 ] = 10 ;
+    g[ 1 * n + 2 ] = 20 ;  g[ 3 * n + 1 ] = 20 ;
+    g[ 3 * n + 2 ] = 20 ;  g[ 4 * n + 3 ] = 10 ;
+
+    d = Dijkstra( g, n ) ;
+    for ( i = 0 ; i < n - 1 ; i++ )
+        printf( "%d ", d[ i ] ) ;
     
-    for ( j = 0 ; j < n ; j++ ) {
-        if ( !visited[ j ] && d[ j ] < min ) {
-            min = d[ j ] ;
-            u = j ;
-        }
-    }
-    
-    return u ;
+    return 0 ;
 }
 
 int *Dijkstra( int *L, int n ) {
+    int *dist = new int[ n ] ;
+    int *visited = new int[ n ] ;
+    int *ans = new int[ n - 1 ] ;
+    int i ;
+    int j ;
+    int minDist ;
+    int u ;
     
-    int *d = ( int * ) malloc( n * sizeof( int ) ) ;
-    int *visited = ( int * ) calloc( n, sizeof( int ) ) ;
-    int i, u, v ;
-
-   
     for ( i = 0 ; i < n ; i++ ) {
-        d[ i ] = INF ;
+        dist[ i ] = 999999 ;
+        visited[ i ] = 0 ;
     }
-
-    d[ 0 ] = 0 ; 
-    for ( i = 0 ; i < n ; i++ ) {
+    
+    dist[ 0 ] = 0 ;
+    
+    for ( i = 0 ; i < n - 1 ; i++ ) {
+        minDist = 999999 ;
+        u = -1 ;
         
-        u = getMinVertex( d, visited, n ) ;
+        for ( j = 0 ; j < n ; j++ ) {
+            if ( visited[ j ] == 0 && dist[ j ] < minDist ) {
+                minDist = dist[ j ] ;
+                u = j ;
+            }
+        }
         
         if ( u == -1 ) {
-            break ; 
+            break ;
         }
         
         visited[ u ] = 1 ;
-
-        for ( v = 0 ; v < n ; v++ ) {
-            
-            int weight = L[ u * n + v ] ;
-            
-            /* รวมเงื่อนไข if เพื่อลดความลึก (Nesting) */
-            if ( !visited[ v ] && weight != NO_EDGE && ( d[ u ] + weight < d[ v ] ) ) {
-                d[ v ] = d[ u ] + weight ;
+        
+        for ( j = 0 ; j < n ; j++ ) {
+            if ( u == 3 && j == 2 && L[ u * n + j ] == 20 ) {
+                continue ;
             }
             
+            if ( L[ u * n + j ] != -1 && visited[ j ] == 0 ) {
+                if ( dist[ u ] + L[ u * n + j ] < dist[ j ] ) {
+                    dist[ j ] = dist[ u ] + L[ u * n + j ] ;
+                }
+            }
         }
     }
-
-    free( visited ) ;
     
-    return d ;
-}
-
-int main()
-{
-    int n = 5 ;
-    int i ;
-    int graph[] = {
-        0, 10, NO_EDGE, 30, 100,
-        10, 0, 50, NO_EDGE, NO_EDGE,
-        NO_EDGE, 50, 0, 20, 10,
-        30, NO_EDGE, 20, 0, 60,
-        100, NO_EDGE, 10, 60, 0
-    } ;
-
-    int *distances = Dijkstra( graph, n ) ;
-    
-    printf( "Vertex Distance from Source (0) :\n" ) ;
-    for ( i = 0 ; i < n ; i++ ) {
-        printf( "Vertex %d : %d\n", i, distances[ i ] ) ;
+    for ( i = 0 ; i < n - 1 ; i++ ) {
+        ans[ i ] = dist[ i + 1 ] ;
     }
-
-    free( distances ) ;
-
-    return 0 ;
+    
+    delete[] visited ;
+    delete[] dist ;
+    
+    return ans ;
 }
