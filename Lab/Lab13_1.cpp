@@ -1,39 +1,57 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int *KnapsackDP( int *w, int *v, int n, int wx ) {
+#define TOTAL_ELEMENTS 5
+#define MAX_BAG_CAPACITY 11
+
+int GetMaximum( int val1, int val2 ) {
     
-    int i ;
-    int j ;
-    
-    int **table = (int **)malloc( ( n + 1 ) * sizeof( int * ) ) ;
-    
-    for ( i = 0 ; i <= n ; i++ ) {
-        table[ i ] = (int *)malloc( ( wx + 1 ) * sizeof( int ) ) ;
+    if ( val1 > val2 ) {
+        return val1 ;
     }
     
-    for ( i = 0 ; i <= n ; i++ ) {
+    return val2 ;
+}
+
+int *KnapsackDP( int *w, int *v, int n, int wx ) {
+    
+    int item_idx ;
+    int weight_limit ;
+    
+    int **dp_table = (int **)malloc( ( n + 1 ) * sizeof( int * ) ) ;
+    
+    if ( dp_table == NULL ) {
+        return NULL ;
+    }
+    
+    for ( item_idx = 0 ; item_idx <= n ; item_idx++ ) {
         
-        for ( j = 0 ; j <= wx ; j++ ) {
+        dp_table[ item_idx ] = (int *)malloc( ( wx + 1 ) * sizeof( int ) ) ;
+        
+        if ( dp_table[ item_idx ] == NULL ) {
+            return NULL ;
+        }
+        
+    }
+    
+    for ( item_idx = 0 ; item_idx <= n ; item_idx++ ) {
+        
+        for ( weight_limit = 0 ; weight_limit <= wx ; weight_limit++ ) {
             
-            if ( i == 0 || j == 0 ) {
+            if ( item_idx == 0 || weight_limit == 0 ) {
                 
-                table[ i ][ j ] = 0 ;
+                dp_table[ item_idx ][ weight_limit ] = 0 ;
                 
-            } else if ( w[ i - 1 ] <= j ) {
+            } else if ( w[ item_idx - 1 ] <= weight_limit ) {
                 
-                int include_item = v[ i - 1 ] + table[ i - 1 ][ j - w[ i - 1 ] ] ;
-                int exclude_item = table[ i - 1 ][ j ] ;
+                int include_val = v[ item_idx - 1 ] + dp_table[ item_idx - 1 ][ weight_limit - w[ item_idx - 1 ] ] ;
+                int exclude_val = dp_table[ item_idx - 1 ][ weight_limit ] ;
                 
-                if ( include_item > exclude_item ) {
-                    table[ i ][ j ] = include_item ;
-                } else {
-                    table[ i ][ j ] = exclude_item ;
-                }
+                dp_table[ item_idx ][ weight_limit ] = GetMaximum( include_val, exclude_val ) ;
                 
             } else {
                 
-                table[ i ][ j ] = table[ i - 1 ][ j ] ;
+                dp_table[ item_idx ][ weight_limit ] = dp_table[ item_idx - 1 ][ weight_limit ] ;
                 
             }
             
@@ -41,47 +59,61 @@ int *KnapsackDP( int *w, int *v, int n, int wx ) {
         
     }
     
-    int *x = (int *)malloc( n * sizeof( int ) ) ;
+    int *selected_items = (int *)malloc( n * sizeof( int ) ) ;
     
-    for ( i = 0 ; i < n ; i++ ) {
-        x[ i ] = 0 ;
+    if ( selected_items == NULL ) {
+        return NULL ;
     }
     
-    int res = table[ n ][ wx ] ;
-    int curr_w = wx ;
+    for ( item_idx = 0 ; item_idx < n ; item_idx++ ) {
+        selected_items[ item_idx ] = 0 ;
+    }
     
-    for ( i = n ; i > 0 && res > 0 ; i-- ) {
+    int current_profit = dp_table[ n ][ wx ] ;
+    int current_capacity = wx ;
+    
+    for ( item_idx = n ; item_idx > 0 && current_profit > 0 ; item_idx-- ) {
         
-        if ( res != table[ i - 1 ][ curr_w ] ) {
+        if ( current_profit != dp_table[ item_idx - 1 ][ current_capacity ] ) {
             
-            x[ i - 1 ] = 1 ;
-            res = res - v[ i - 1 ] ;
-            curr_w = curr_w - w[ i - 1 ] ;
+            selected_items[ item_idx - 1 ] = 1 ;
+            current_profit = current_profit - v[ item_idx - 1 ] ;
+            current_capacity = current_capacity - w[ item_idx - 1 ] ;
             
         }
         
     }
     
-    for ( i = 0 ; i <= n ; i++ ) {
-        free( table[ i ] ) ;
+    for ( item_idx = 0 ; item_idx <= n ; item_idx++ ) {
+        free( dp_table[ item_idx ] ) ;
     }
-    free( table ) ;
+    free( dp_table ) ;
     
-    return x ;
+    return selected_items ;
 }
 
 int main() {
     
-    int n = 5 , wx = 11 ;
-    int w[ 5 ] = { 1, 2, 5, 6, 7 } ;
-    int v[ 5 ] = { 1, 6, 18, 22, 28 } ;
-    int *x ;
+    int num_items = TOTAL_ELEMENTS ;
+    int max_capacity = MAX_BAG_CAPACITY ;
     
-    x = KnapsackDP( w, v, n, wx ) ;
+    int weight_arr[ TOTAL_ELEMENTS ] = { 1, 2, 5, 6, 7 } ;
+    int value_arr[ TOTAL_ELEMENTS ] = { 1, 6, 18, 22, 28 } ;
+    int *result_arr ;
     
-    for( int i = 0 ; i < n ; i++ ) printf( "%d ", x[ i ] ) ;
+    result_arr = KnapsackDP( weight_arr, value_arr, num_items, max_capacity ) ;
     
-    free( x ) ;
+    if ( result_arr != NULL ) {
+        
+        for ( int print_idx = 0 ; print_idx < num_items ; print_idx++ ) {
+            
+            printf( "%d ", result_arr[ print_idx ] ) ;
+            
+        }
+        
+        free( result_arr ) ;
+        
+    }
     
     return 0 ;
 }
